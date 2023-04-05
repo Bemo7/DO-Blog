@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css_files %}
+    <link rel="stylesheet" href="{% static 'assets/css/owl.css' %}">
+{% endblock  %}
+
+{% block title %}{% endblock  %}
+
+{% block content %}
+  {% include 'blog/includes/preloader.html' %}
+  {% include 'blog/includes/header.html' %}
+  <!-- Page Content -->
+    <!-- Banner Starts Here -->
+    <div class="heading-page header-text">
+      <section class="page-heading">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="text-content">
+                <h4>Recent Posts</h4>
+                <h2>{{title}}</h2>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+    
+    <!-- Banner Ends Here -->
+
+    <section class="blog-posts grid-system">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8">
+            <div class="all-blog-posts">
+              <div class="row">
+                <div class="col-lg-6">
+                  {% for post in page_obj %}
+                    {% include 'blog/includes/post.html' %}
+                  {% endfor %}
+                </div>
+                <div class="col-lg-12">
+                  <ul class="page-numbers">
+                    {% if page_obj.has_previous %}
+                    <li><a href="?page=1">First</a></li>
+                      <li><a href="?page={{page_obj.previous_page_number}}"><i class="fa fa-angle-double-left"></i></a></li>
+                    {% endif %}                
+                    <li><a>{{ page_obj.number }}</a></li>
+                    {% if page_obj.has_next %}
+                      <li><a href="?page={{page_obj.next_page_number}}"><i class="fa fa-angle-double-right"></i></a></li>
+                      <li><a href="?page={{page_obj.num_pages}}">Last</a></li>
+                    {% endif %}
+                  </ul>
+                </div> 
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="sidebar">
+              <div class="row">
+                <div class="col-lg-12">
+                  <div class="sidebar-item search">
+                    <form id="search_form" name="gs" method="POST" action="/blog/results/">
+                      {% csrf_token %}
+                      <input type="text" name="search" class="searchText" placeholder="type to search...">
+                    </form>
+                  </div>
+                </div>
+                <div class="col-lg-12">
+                  <div class="sidebar-item recent-posts">
+                    <div class="sidebar-heading">
+                      <h2>Recent Posts</h2>
+                    </div>
+                    <div class="content">
+                      <ul>
+                        {% for post in rec_posts %}
+                        <li><a href="{% url 'post_detail' post.slug %}">
+                          <h5>{{post.exrt}}</h5>
+                          <span>{{ post.date|date:"M d, Y" }}</span>
+                        </a></li>
+                        {% endfor %}
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-12">
+                  <div class="sidebar-item categories">
+                    <div class="sidebar-heading">
+                      <h2>Categories</h2>
+                    </div>
+                    <div class="content">
+                      <ul>
+                        {% for category in categories %}
+                            <li><a href="{% url 'category_posts' category %}">-{{category}}</a></li>
+                        {% endfor %}
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-12">
+                  <div class="sidebar-item tags">
+                    <div class="sidebar-heading">
+                      <h2>Tag Clouds</h2>
+                    </div>
+                    <div class="content">
+                      <ul>
+                        {% for tag in tags %}
+                        <li><a href="{% url 'tag_posts' tag %}">{{tag.caption}}</a></li>
+                        {% endfor %}
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    {% include 'blog/includes/footer.html' %}
+{% endblock  %}

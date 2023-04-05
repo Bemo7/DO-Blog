@@ -1,0 +1,49 @@
+form{
+    border: grey solid 3px;
+    background: #eeeeee;
+    border-radius: 10px;
+    padding: 3rem 4rem;
+    margin-top: 9rem;
+    text-align: left;
+}
+
+form > * {
+    color: #333;
+}
+
+form > button {
+    display: inline-block;
+	background-color: #147119;
+	color: #fff;
+    border: none;
+    font-weight: 400;
+    padding: 0.5rem;
+    border-radius: 4px;
+    transition: all .3s;
+}
+
+form > button:hover {
+    background: #229628;
+    
+}
+
+form > ul > li {
+    margin-left: 20px;
+    color: #7A7A7A;
+    list-style: lower-roman;
+}
+
+form > * {
+    margin-bottom: 0.8rem;
+}
+
+@media (max-width: 769px) {
+    form > p > span {
+        display: block;
+    }
+    form > button{
+        display: block;
+        margin: auto;
+        width: 100%;
+    }
+}

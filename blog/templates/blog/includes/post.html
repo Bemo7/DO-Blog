@@ -1,0 +1,30 @@
+{% load static %}
+<div class="{% if home in active %}col-lg-12{% else %}col-lg-6{% endif %}">
+  <div class="blog-post">
+    <div class="blog-thumb">
+      <img src="{{ post.image.url }}" alt="{{post.image.name}}">
+    </div>
+    <div class="down-content">
+      <span>{{post.category}}</span>
+      <a href="{% url 'post_detail' post.slug %}"><h4>{{post.title}}</h4></a>
+      <ul class="post-info">
+        <li><a href="#">{{post.author}}</a></li>
+        <li><a href="#">{{post.date|date:"d M Y"}}</a></li>
+        <li><a href="{% url 'post_detail' post.slug%}">{{ post.num_comments }} Comments</a></li>
+      </ul>
+      <p>{{post.exrt}}</p>
+      <div class="post-options">
+        <div class="row">
+          <div class="col-lg-12">
+            <ul class="post-tags">
+              <li><i class="fa fa-tags"></i></li>
+              {% for tag in post.all_tags %}
+                <li><a href="{% url 'tag_posts' tag %}">{{tag}}</a>,</li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

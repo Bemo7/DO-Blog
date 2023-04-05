@@ -1,0 +1,7 @@
+.staff{
+    width: 5rem;
+    height: 21rem;
+    object-fit: cover;
+    border-radius: 5%;
+    margin-bottom: 0.5rem;
+}

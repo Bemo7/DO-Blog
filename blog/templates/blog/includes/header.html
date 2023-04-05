@@ -1,0 +1,43 @@
+{% load static %}
+{% block css_files %}<link rel="stylesheet" href="{% static 'includes/header.css' %}">{% endblock  %}
+<header class="">
+    <nav class="navbar navbar-expand-lg">
+      <div class="container">
+        <a class="navbar-brand" href="{% url 'home' %}">
+          <img src="{% static 'assets/images/DO_DEEL.png' %}" alt="logo">
+          <h2>DIGITAL ONBOARDERS<em>.</em></h2>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item {% if home in active %} active{% endif %}">
+              <a class="nav-link" href="{% url 'home' %}">Home
+                <span class="sr-only">(current)</span>
+              </a>
+            </li> 
+            <li class="nav-item {% if about in active %} active{% endif %}">
+              <a class="nav-link" href="{% url 'about' %}">About Us</a>
+            </li>
+            <li class="nav-item {% if blog in active %} active{% endif %}">
+              <a class="nav-link" href="{% url 'blog' %}">Posts</a>
+            </li>
+            <li class="nav-item {% if contact in active %} active{% endif %}">
+              <a class="nav-link" href="{% url 'contact' %}">Contact Us</a>
+            </li>
+            {% if user.is_authenticated %}
+            <li class="nav-item acct">
+              <a href="{% url 'logout' %}" class="nav-link acct-link">Logout</a>
+            </li>
+            {% else %}
+            <li class="nav-item {% if login in active %} active{% endif %}">
+              <a class="nav-link" href="{% url 'login' %}">Login</a>
+            </li>
+            {% endif %}
+            
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>

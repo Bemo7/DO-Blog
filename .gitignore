@@ -1,0 +1,4 @@
+.ebextensions
+.vscode
+db.sqlite3
+*.pyc

@@ -1,0 +1,9 @@
+<form action="/blog" method="POST">
+    {% csrf_token %}
+    {% for field in form %}
+    <div class = "form-control {% if field.errors %} errors {% endif %}">
+        {{ field.label_tag }}
+        {{ field }}
+        {{ form.errors }}
+    </div>
+    {% endfor %}

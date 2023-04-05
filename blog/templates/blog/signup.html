@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css_files %}
+  <link rel="stylesheet" href="{% static 'includes/signup.css' %}">
+{% endblock css_files %}
+
+{% block title %}Sign Up{% endblock title %}
+
+{% block content %}
+{% include 'blog/includes/header.html' %}
+{% include 'blog/includes/preloader.html' %}
+<div class="heading-page header-text">
+    <section class="page-heading">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="text-content">
+              <h4></h4>
+              <h2>sign up</h2>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    </div>
+    <form action="{% url 'signup' %}" method="POST" class="container">
+      {% csrf_token %}
+      {{ form.as_p }}
+        <button type="submit" id="form-submit">Submit</button>
+    </form>
+{% include 'blog/includes/footer.html' %}
+<script>
+  {% if error %}
+  alert('Unable to sign up');
+  window.location = "{% url 'signup' %}";
+  {% endif %}
+</script>
+{% endblock content %}
