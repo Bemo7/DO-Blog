@@ -16,6 +16,18 @@ posts = Post.objects.all()
 categories = Category.objects.all()
 tags = Tag.objects.all()
 
+def refresh():
+    new_tags = []
+    for tg in tags:
+        tg.refresh_from_db()
+        new_tags.append(tg)
+    new_cats = []
+    for cat in categories:
+        cat.refresh_from_db()
+        new_cats.append(cat)
+    return {"tags":new_tags, "categories":new_cats}
+
+
 desc_ordered_posts = posts.order_by('-date','title')[:3]
 
 header = {"home":"home","about":"about","blog":"blog","contact":"contact", "lg":"login"}
@@ -41,10 +53,11 @@ def home(request):
     active = ["home"]
     banner_posts = list(map(banner_slug,df_banner()))
 
+
     return render(request,'blog/index.html',{
         "posts" : desc_ordered_posts,
-        "categories" : categories,
-        "tags" : tags,
+        "categories" : refresh()['categories'],
+        "tags" : refresh()['tags'],
         "active": active,
         "home" : header["home"],
         "banners" : banner_posts,
@@ -100,8 +113,8 @@ def blog(request):
 
     categories = Category.objects.all()
     return render(request,'blog/blog.html',{
-        "tags" : tags,
-        "categories" : categories,
+        "categories" : refresh()['categories'],
+        "tags" : refresh()['tags'],
         "page_obj" : page_obj,
         "active" : active,
         "blog" : header["blog"],
