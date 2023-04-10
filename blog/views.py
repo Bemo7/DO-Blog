@@ -13,19 +13,32 @@ from .forms import Search, CommentForm, SignUpForm, LoginForm
 # Create your views here.
 
 posts = Post.objects.all()
-categories = Category.objects.all()
-tags = Tag.objects.all()
 
-def refresh():
-    new_tags = []
-    for tg in tags:
-        tg.refresh_from_db()
-        new_tags.append(tg)
+
+
+def entry_check(x,y):
+    try:
+        return x.refresh_from_db()
+    except y.DoesNotExist:
+        return None
+    
+def cat_refresh():
     new_cats = []
+    categories = Category.objects.all()
     for cat in categories:
-        cat.refresh_from_db()
+        if entry_check(cat,Category) == None:
+            pass
         new_cats.append(cat)
-    return {"tags":new_tags, "categories":new_cats}
+    return new_cats
+
+def tags_refresh():
+    new_tags = []
+    tags = Tag.objects.all()
+    for tg in tags:
+        if entry_check(tg,Tag) == None:
+            pass
+        new_tags.append(tg)
+    return new_tags
 
 
 desc_ordered_posts = posts.order_by('-date','title')[:3]
@@ -53,11 +66,10 @@ def home(request):
     active = ["home"]
     banner_posts = list(map(banner_slug,df_banner()))
 
-
     return render(request,'blog/index.html',{
         "posts" : desc_ordered_posts,
-        "categories" : refresh()['categories'],
-        "tags" : refresh()['tags'],
+        "categories" : cat_refresh(),
+        "tags" : tags_refresh(),
         "active": active,
         "home" : header["home"],
         "banners" : banner_posts,
@@ -110,11 +122,9 @@ def blog(request):
     paginator = Paginator(posts.order_by('-date','title'), 6) # Show 6 posts per page.
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-
-    categories = Category.objects.all()
     return render(request,'blog/blog.html',{
-        "categories" : refresh()['categories'],
-        "tags" : refresh()['tags'],
+        "categories" : cat_refresh(),
+        "tags" : tags_refresh(),
         "page_obj" : page_obj,
         "active" : active,
         "blog" : header["blog"],
@@ -130,8 +140,8 @@ def tag_posts(request,tag):
     return render(request,'blog/tag-posts.html',{
         "page_obj" : page_obj,
         "title" : tag,
-        "categories" : categories,
-        "tags" : tags,
+        "categories" : cat_refresh(),
+        "tags" : tags_refresh(),
         "rec_posts" : desc_ordered_posts,
     })
 
@@ -144,8 +154,8 @@ def category_post(request,cat):
     return render(request,'blog/category-posts.html',{
         "page_obj" : page_obj,
         "title" : cat,
-        "categories" : categories,
-        "tags" : tags,
+        "categories" : cat_refresh(),
+        "tags" : tags_refresh(),
         "rec_posts" : desc_ordered_posts,
     })
 
@@ -172,8 +182,8 @@ def post_details(request,slug):
         "num_cmts" : num_comment,
         "post_tgs" : post_tags,
         "post_cmts" : post_comments,
-        "categories" : categories,
-        "tags" : tags,
+        "categories" : cat_refresh(),
+        "tags" : tags_refresh(),
         "rec_posts" : desc_ordered_posts,
     })
 
@@ -186,8 +196,8 @@ def result(request):
             page_obj = paginator.page(1)
             return render(request,'blog/blog.html',{
                 "posts" : search_results,
-                "tags" : tags,
-                "categories" : categories,
+                "categories" : cat_refresh(),
+                "tags" : tags_refresh(),
                 "page_obj" : page_obj,
             })
 
