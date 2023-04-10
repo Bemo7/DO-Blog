@@ -3,3 +3,4 @@
 db.sqlite3
 *.pyc
 runtime.txt
+dd_venv
