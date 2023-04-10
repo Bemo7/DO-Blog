@@ -26,12 +26,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", get_random_secret_key())
 
-DEBUG = os.getenv("DEBUG", "False") == "True"
+DEBUG = os.getenv("DEBUG", "True") == "True"
 
 ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "127.0.0.1,localhost").split(",")
 
 # Added for Digital Ocean
-DEVELOPMENT_MODE = os.getenv("DEVELOPMENT_MODE", "False") == "True"
+DEVELOPMENT_MODE = os.getenv("DEVELOPMENT_MODE", "True") == "True"
 
 # Application definition
 
@@ -139,7 +139,8 @@ STATICFILES_DIRS = [
 ]
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-from .cdn.conf import * # noqa
+if DEBUG == False:
+    from .cdn.conf import * # noqa
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
@@ -154,5 +155,3 @@ LOGOUT_REDIRECT_URL = 'home'
 
 #CSRF_USE_SECURE = True
 #SESSION_COOKIE_SECURE = True
-
-# Your Spaces Bucket's origin URL: https://do-deelers.fra1.digitaloceanspaces.com
